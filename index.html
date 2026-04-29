@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WealthFlow — Expense & Investment Tracker</title>
+    <meta
+      name="description"
+      content="Track your expenses, analyze spending patterns, and monitor gold & silver investments in one beautiful dashboard."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+            />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">WealthFlow</span>
+          <span class="brand-sub">Financial Dashboard</span>
+        </div>
+      </div>
+
+      <!-- No profile switcher here anymore -->
+
+      <nav class="sidebar-nav">
+        <button
+          class="nav-item active"
+          data-page="dashboard"
+          onclick="navigate('dashboard')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect></svg
+          ></span>
+          <span>Dashboard</span>
+        </button>
+        <button
+          class="nav-item"
+          data-page="expenses"
+          onclick="navigate('expenses')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path
+                d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+              ></path></svg
+          ></span>
+          <span>Expenses</span>
+        </button>
+        <button
+          class="nav-item"
+          data-page="analytics"
+          onclick="navigate('analytics')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line></svg
+          ></span>
+          <span>Analytics</span>
+        </button>
+        <button
+          class="nav-item"
+          data-page="investments"
+          onclick="navigate('investments')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline></svg
+          ></span>
+          <span>Investments</span>
+        </button>
+        <button
+          class="nav-item"
+          data-page="budget"
+          onclick="navigate('budget')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle></svg
+          ></span>
+          <span>Budget</span>
+        </button>
+        <button
+          class="nav-item"
+          data-page="settings"
+          onclick="navigate('settings')"
+        >
+          <span class="nav-icon"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path></svg
+          ></span>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">D</div>
+          <div class="user-info" style="flex: 1;">
+            <span class="user-name" id="displayUserName">User</span>
+            <span class="user-role">Guest</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+          <p class="page-subtitle" id="pageSubtitle">
+            Your financial overview at a glance
+          </p>
+        </div>
+        <div class="topbar-right">
+          <div class="date-badge" id="currentDate"></div>
+          <button class="btn-add-expense" onclick="openAddModal()">
+            <span>+</span> Add Expense
+          </button>
+        </div>
+      </header>
+
+      <!-- Loading Spinner Overlay -->
+      <div
+        id="loadingOverlay"
+        class="loading-overlay"
+        style="
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(13, 15, 18, 0.7);
+          backdrop-filter: blur(4px);
+          z-index: 1000;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div
+          class="spinner"
+          style="
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            border-top-color: #10b981;
+            animation: spin 1s ease-in-out infinite;
+          "
+        ></div>
+      </div>
+      <style>
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+
+      <!-- DASHBOARD PAGE -->
+      <section class="page active" id="page-dashboard">
+        <!-- Summary Cards -->
+        <div class="cards-grid">
+          <div class="card card-balance">
+            <div class="card-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path
+                  d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                ></path>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Total Balance</span>
+              <span class="card-value" id="totalBalance">₹0</span>
+              <span class="card-change positive"></span>
+            </div>
+            <div class="card-glow"></div>
+          </div>
+          <div class="card card-income">
+            <div class="card-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Monthly Income</span>
+              <span class="card-value" id="totalIncome">₹0</span>
+              <span class="card-change positive" id="incomeChange"
+                ></span
+              >
+            </div>
+            <div class="card-glow"></div>
+          </div>
+          <div class="card card-expense">
+            <div class="card-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                <polyline points="17 18 23 18 23 12"></polyline>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Total Spent</span>
+              <span class="card-value" id="totalSpent">₹0</span>
+              <span class="card-change negative" id="spentChange"
+                >-</span
+              >
+            </div>
+            <div class="card-glow"></div>
+          </div>
+          <div class="card card-savings">
+            <div class="card-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Net Savings</span>
+              <span class="card-value" id="netSavings">₹0</span>
+              <span class="card-change" id="savingsChange">Remaining</span>
+            </div>
+            <div class="card-glow"></div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+          <div class="chart-card large">
+            <div class="chart-header">
+              <h3>Spending Trends</h3>
+              <div class="chart-legend">
+                <span class="legend-dot income-dot"></span><span>Income</span>
+                <span class="legend-dot expense-dot"></span
+                ><span>Expenses</span>
+              </div>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card small">
+            <div class="chart-header">
+              <h3>By Category</h3>
+            </div>
+            <div class="chart-wrapper donut-wrapper">
+              <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="donut-legend" id="donutLegend"></div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions + Quick Investments -->
+        <div class="bottom-row">
+          <div class="glass-card recent-tx">
+            <div class="section-header">
+              <h3>Recent Transactions</h3>
+              <button class="see-all" onclick="navigate('expenses')">
+                See All
+              </button>
+            </div>
+            <div class="tx-list" id="recentTxList">
+              <div class="empty-state">
+                No transactions yet. Add your first expense!
+              </div>
+            </div>
+          </div>
+          <div class="glass-card quick-invest">
+            <div class="section-header">
+              <h3>Investment Snapshot</h3>
+              <button class="see-all" onclick="navigate('investments')">
+                Details
+              </button>
+            </div>
+            <div class="invest-mini" id="investMini"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPENSES PAGE -->
+      <section class="page" id="page-expenses">
+        <div class="expenses-toolbar">
+          <div class="search-box">
+            <span class="search-icon"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg
+            ></span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search transactions..."
+              oninput="filterExpenses()"
+            />
+          </div>
+          <select
+            class="filter-select"
+            id="categoryFilter"
+            onchange="filterExpenses()"
+          >
+            <option value="">All Categories</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Bills">Bills</option>
+            <option value="Education">Education</option>
+            <option value="Travel">Travel</option>
+            <option value="Other">Other</option>
+          </select>
+          <select
+            class="filter-select"
+            id="monthFilter"
+            onchange="filterExpenses()"
+          >
+            <option value="">All Time</option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+          </select>
+        </div>
+        <div class="glass-card">
+          <div class="full-tx-list" id="fullTxList"></div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS PAGE -->
+      <section class="page" id="page-analytics">
+        <div class="analytics-grid">
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <h3>Monthly Expense Breakdown</h3>
+            </div>
+            <div class="chart-wrapper tall">
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card half">
+            <div class="chart-header">
+              <h3>Category Distribution</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="pieChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card half">
+            <div class="chart-header">
+              <h3>Daily Spending Radar</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="radarChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <h3>Savings Progress Over Months</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="savingsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVESTMENTS PAGE -->
+      <section class="page" id="page-investments">
+        <div class="invest-header-row">
+          <div class="invest-summary-cards">
+            <div class="invest-card gold-card">
+              <div class="metal-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="color: var(--gold)"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="6"></circle>
+                </svg>
+              </div>
+              <div class="metal-info">
+                <span class="metal-name">24k Gold Portfolio</span>
+                <span class="metal-value" id="goldPortfolioValue">₹0</span>
+                <span class="metal-pnl" id="goldPnL">P&L: ₹0</span>
+              </div>
+              <div class="metal-chart-mini">
+                <canvas id="goldMiniChart"></canvas>
+              </div>
+            </div>
+            <div class="invest-card silver-card">
+              <div class="metal-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="color: var(--silver)"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="6"></circle>
+                </svg>
+              </div>
+              <div class="metal-info">
+                <span class="metal-name">Silver Portfolio</span>
+                <span class="metal-value" id="silverPortfolioValue">₹0</span>
+                <span class="metal-pnl" id="silverPnL">P&L: ₹0</span>
+              </div>
+              <div class="metal-chart-mini">
+                <canvas id="silverMiniChart"></canvas>
+              </div>
+            </div>
+            <div class="invest-card total-invest-card">
+              <div class="metal-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="color: var(--primary)"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+              </div>
+              <div class="metal-info">
+                <span class="metal-name">Total Invested</span>
+                <span class="metal-value" id="totalInvestedValue">₹0</span>
+                <span class="metal-pnl" id="totalInvestPnL">Total P&L: ₹0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="invest-content">
+          <div
+            class="invest-charts-col"
+            style="flex: 1.5; display: flex; flex-direction: column; gap: 16px"
+          >
+            <div class="chart-card full-width">
+              <div class="chart-header">
+                <h3>Portfolio Performance (Invested vs Current Value)</h3>
+                <div class="chart-legend">
+                  <span
+                    class="legend-dot"
+                    style="background: var(--text2)"
+                  ></span
+                  ><span>Invested</span>
+                  <span
+                    class="legend-dot"
+                    style="background: var(--primary)"
+                  ></span
+                  ><span>Current Value</span>
+                </div>
+              </div>
+              <div class="chart-wrapper tall">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="invest-sidebar">
+            <div class="glass-card add-invest-card">
+              <h3>Add Investment</h3>
+              <div class="form-group">
+                <label>Metal Type</label>
+                <select id="metalType" class="form-input">
+                  <option value="gold">24k Gold</option>
+                  <option value="silver">Silver</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Quantity (grams)</label>
+                <input
+                  type="number"
+                  id="metalQty"
+                  class="form-input"
+                  placeholder="e.g. 10"
+                  min="0.1"
+                  step="0.1"
+                />
+              </div>
+              <div class="form-group">
+                <label>Purchase Price (₹/gram)</label>
+                <input
+                  type="number"
+                  id="metalBuyPrice"
+                  class="form-input"
+                  placeholder="e.g. 7200"
+                />
+              </div>
+              <div class="form-group">
+                <label>Purchase Date</label>
+                <input type="date" id="metalDate" class="form-input" />
+              </div>
+              <button class="btn-primary" onclick="addInvestment()">
+                Add Investment
+              </button>
+            </div>
+
+            <div class="glass-card live-rates">
+              <h3>Live Metal Rates</h3>
+              <div class="rate-row">
+                <span class="rate-label">24k Gold</span>
+                <div class="rate-val-wrap">
+                  <span class="rate-value gold-rate" id="liveGoldRate"
+                    >₹7,450/g</span
+                  >
+                  <span class="rate-change gold-up" id="goldRateChange"
+                    >▲ 0.3%</span
+                  >
+                </div>
+              </div>
+              <div class="rate-divider"></div>
+              <div class="rate-row">
+                <span class="rate-label">Silver</span>
+                <div class="rate-val-wrap">
+                  <span class="rate-value silver-rate" id="liveSilverRate"
+                    >₹91/g</span
+                  >
+                  <span class="rate-change silver-up" id="silverRateChange"
+                    >▲ 0.1%</span
+                  >
+                </div>
+              </div>
+              <div class="rate-update-time">
+                 In development • Currently manual updates only.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card investments-table-card">
+          <div class="section-header">
+            <h3>Investment Holdings</h3>
+          </div>
+          <div class="investments-table" id="investmentsTable">
+            <div class="empty-state">No investments added yet.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUDGET PAGE -->
+      <section class="page" id="page-budget">
+        <div class="budget-grid">
+          <div class="glass-card budget-setup">
+            <h3>Set Monthly Budget</h3>
+            <div class="form-group">
+              <label>Monthly Income (₹)</label>
+              <input
+                type="number"
+                id="budgetIncome"
+                class="form-input"
+                placeholder="e.g. 50000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Food Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetFood"
+                class="form-input"
+                placeholder="e.g. 8000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Transport Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetTransport"
+                class="form-input"
+                placeholder="e.g. 3000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Shopping Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetShopping"
+                class="form-input"
+                placeholder="e.g. 5000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Bills Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetBills"
+                class="form-input"
+                placeholder="e.g. 10000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Entertainment Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetEntertainment"
+                class="form-input"
+                placeholder="e.g. 2000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Others Budget (₹)</label>
+              <input
+                type="number"
+                id="budgetOther"
+                class="form-input"
+                placeholder="e.g. 5000"
+              />
+            </div>
+            <button class="btn-primary" onclick="saveBudget()">
+              Save Budget
+            </button>
+          </div>
+          <div class="budget-progress-col">
+            <div class="glass-card">
+              <h3>Budget vs Actual</h3>
+              <div class="chart-wrapper">
+                <canvas id="budgetChart"></canvas>
+              </div>
+            </div>
+            <div class="glass-card budget-bars">
+              <h3>Category Progress</h3>
+              <div id="budgetProgressBars"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS PAGE -->
+      <section class="page" id="page-settings">
+        <div
+          class="settings-grid"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
+        >
+          <div class="glass-card settings-card">
+            <div class="section-header">
+              <h3>Manual Metal Rates</h3>
+            </div>
+            <p
+              style="font-size: 12px; color: var(--text3); margin-bottom: 16px"
+            >
+              Update live rates manually. Disables automatic fetching.
+            </p>
+
+            <div class="form-group">
+              <label>24k Gold Price (₹/gram)</label>
+              <input
+                type="number"
+                id="settingGoldPrice"
+                class="form-input"
+                placeholder="e.g. 7450"
+              />
+            </div>
+            <div class="form-group">
+              <label>Silver Price (₹/gram)</label>
+              <input
+                type="number"
+                id="settingSilverPrice"
+                class="form-input"
+                placeholder="e.g. 91"
+              />
+            </div>
+
+            <button class="btn-primary" onclick="saveSettings()">
+              Save Rates
+            </button>
+          </div>
+
+          <div class="glass-card settings-card">
+            <div class="section-header">
+              <h3>Data Management</h3>
+            </div>
+            <p style="font-size: 12px; color: var(--text3); margin-bottom: 16px">
+              Backup your data to an encrypted file, or restore from a previous backup.
+            </p>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label>Backup Password</label>
+              <input type="password" id="backupPassword" class="form-input" placeholder="Enter password to encrypt" />
+              <button class="btn-primary" onclick="backupData()" style="margin-top: 12px;">Download Backup</button>
+            </div>
+
+            <div style="height: 1px; background: var(--surface-border); margin: 20px 0;"></div>
+
+            <div class="form-group" style="margin-top: 16px;">
+              <label>Restore from Backup</label>
+              <input type="file" id="restoreFile" class="form-input" accept=".enc" style="padding: 8px; font-size: 14px; background: var(--surface);" />
+            </div>
+            <div class="form-group">
+              <label>Decryption Password</label>
+              <input type="password" id="restorePassword" class="form-input" placeholder="Enter password to decrypt" />
+              <button class="btn-primary" onclick="restoreData()" style="margin-top: 12px; background: var(--red); color: #fff;">Restore Backup</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Add Expense Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+      <div class="modal" onclick="event.stopPropagation()" id="expenseModal">
+        <div class="modal-header">
+          <h2>Add New Expense</h2>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input
+                type="number"
+                id="expAmount"
+                class="form-input"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="expCategory" class="form-input">
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Bills">Bills</option>
+                <option value="Education">Education</option>
+                <option value="Travel">Travel</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              id="expDesc"
+              class="form-input"
+              placeholder="What did you spend on?"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" id="expDate" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="expMethod" class="form-input">
+                <option value="UPI">UPI</option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="NetBanking">Net Banking</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn-primary" onclick="addExpense()">
+            Add Expense
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
