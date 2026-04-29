@@ -201,7 +201,7 @@ body {
 .nav-item.active {
   color: var(--primary);
   background: rgba(16, 185, 129, 0.08);
-  border-left: 3px solid var(--primary);
+  border-left: 0px solid var(--primary);
   padding-left: 11px;
 }
 .nav-icon {
