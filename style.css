@@ -12,7 +12,7 @@
   --bg3: #1a1d21;
   --surface: rgba(255, 255, 255, 0.02);
   --surface2: rgba(255, 255, 255, 0.04);
-  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border: rgba(255, 255, 255, 0.048);
   --primary: #10b981;
   --primary2: #059669;
   --primary-glow: rgba(16, 185, 129, 0.25);
@@ -35,7 +35,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "Inter", sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100vw;
 }
 
 /* ===== ANIMATED BACKGROUND ===== */
@@ -115,6 +117,7 @@ body {
 .main-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 28px 32px;
   display: flex;
   flex-direction: column;
@@ -123,14 +126,14 @@ body {
   background: transparent;
 }
 .main-content::-webkit-scrollbar {
-  width: 2px;
+  width: 1px;
 }
 .main-content::-webkit-scrollbar-track {
   background: transparent;
 }
 .main-content::-webkit-scrollbar-thumb {
   background: var(--surface-border);
-  border-radius: 3px;
+  border-radius: 1px;
 }
 
 /* ===== SIDEBAR ===== */
@@ -139,7 +142,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 0 10px 24px;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: 2px solid var(--surface-border);
   margin-bottom: 20px;
 }
 .brand-icon {
@@ -159,7 +162,7 @@ body {
   font-weight: 700;
   font-size: 15px;
   color: #fff;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.2em;
 }
 .brand-sub {
   display: block;
@@ -179,14 +182,14 @@ body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   padding: 11px 14px;
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--text3);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   font-family: "Inter", sans-serif;
   font-weight: 500;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -198,11 +201,13 @@ body {
   color: var(--text2);
   background: rgba(255, 255, 255, 0.03);
 }
+-- IGNORE--------------------------------------------------------------------------------------------------- --
 .nav-item.active {
   color: var(--primary);
-  background: rgba(16, 185, 129, 0.08);
-  border-left: 0px solid var(--primary);
+  background: rgba(16, 185, 114, 0.479);
+  border-left: 1px solid var(--primary);
   padding-left: 11px;
+  
 }
 .nav-icon {
   display: flex;
@@ -253,7 +258,7 @@ body {
   padding-bottom: 4px;
 }
 .page-title {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: #fff;
@@ -268,6 +273,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 .date-badge {
   background: var(--surface);
@@ -295,11 +301,34 @@ body {
 .btn-add-expense:hover {
   background: var(--primary2);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 6px 20px rgba(16, 185, 58, 0.3);
 }
-.btn-add-expense span {
+.btn-add-expense span,
+.btn-add-income span {
   font-size: 18px;
   line-height: 1;
+}
+
+.btn-add-income {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-add-income:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(16, 185, 58, 0.3);
 }
 
 /* ===== PAGES ===== */
@@ -395,7 +424,7 @@ body {
   font-weight: 600;
 }
 .card-value {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #fff;
@@ -707,6 +736,9 @@ body {
 }
 .cat-Other {
   background: rgba(148, 163, 184, 0.12);
+}
+.cat-Income {
+  background: rgba(16, 185, 129, 0.12);
 }
 
 /* ===== EXPENSES PAGE ===== */
@@ -1082,7 +1114,7 @@ body {
 .btn-primary:hover {
   background: var(--primary2);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.856);
 }
 .btn-secondary {
   flex: 1;
@@ -1251,7 +1283,27 @@ body {
   color: var(--red);
 }
 
-/* ===== MOBILE RESPONSIVENESS ===== */
+/* ===== RESPONSIVE DESIGN ===== */
+/* Tablet & Small Laptops */
+@media (max-width: 1024px) {
+  .charts-row,
+  .bottom-row,
+  .analytics-grid,
+  .invest-summary-cards,
+  .budget-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .invest-content {
+    flex-direction: column;
+  }
+
+  .invest-sidebar {
+    width: 100%;
+  }
+}
+
+/* Mobile Devices */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -1282,9 +1334,11 @@ body {
   }
 
   .nav-item {
+    flex: 1;
+    min-width: 0;
     flex-direction: column;
     gap: 3px;
-    padding: 8px 0;
+    padding: 8px 2px;
     justify-content: center;
     text-align: center;
     border-radius: 0;
@@ -1292,6 +1346,11 @@ body {
 
   .nav-item span:not(.nav-icon) {
     font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
   }
 
   .nav-item.active {
@@ -1304,7 +1363,7 @@ body {
 
   .main-content {
     padding: 16px;
-    padding-bottom: 80px;
+    padding-bottom: 80px; /* Space for bottom nav */
   }
 
   .topbar {
@@ -1315,27 +1374,11 @@ body {
 
   .topbar-right {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .cards-grid {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .charts-row,
-  .bottom-row,
-  .analytics-grid,
-  .invest-summary-cards,
-  .budget-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .invest-content {
-    flex-direction: column;
-  }
-
-  .invest-sidebar {
-    width: 100%;
   }
 
   .expenses-toolbar {
@@ -1351,11 +1394,18 @@ body {
   }
 
   .investments-table-card {
+    max-width: 100vw;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 20px 16px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
     overflow-x: auto;
   }
 
   .investments-table {
-    min-width: 600px;
+    min-width: 600px; /* Force table width, let card scroll */
   }
 
   .form-row {
@@ -1364,11 +1414,28 @@ body {
 
   .modal {
     width: 95%;
+    margin: 0 auto;
   }
 }
 
+/* Small Mobile Devices */
 @media (max-width: 480px) {
   .cards-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .topbar-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-add-expense,
+  .btn-add-income {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-item span:not(.nav-icon) {
+    display: none;
   }
 }
