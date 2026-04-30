@@ -46,8 +46,8 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-name">EXPENZA</span>
-          <span class="brand-sub">Financial Dashboard</span>
+          <span class="brand-name">Expenza</span>
+          <span class="brand-sub">Expense Dashboard</span>
         </div>
       </div>
 
@@ -193,7 +193,7 @@
 
       <div class="sidebar-footer">
         <div class="user-card">
-          <div class="user-avatar">🐦‍🔥</div>
+          <div class="user-avatar">H</div>
           <div class="user-info" style="flex: 1;">
             <span class="user-name" id="displayUserName">Homosapien</span>
             <span class="user-role">Made with ❤️</span>
@@ -214,6 +214,9 @@
         </div>
         <div class="topbar-right">
           <div class="date-badge" id="currentDate"></div>
+          <button class="btn-add-income" onclick="openAddIncomeModal()">
+            <span>+</span> Add Income
+          </button>
           <button class="btn-add-expense" onclick="openAddModal()">
             <span>+</span> Add Expense
           </button>
@@ -452,6 +455,7 @@
             <option value="Education">Education</option>
             <option value="Travel">Travel</option>
             <option value="Other">Other</option>
+            <option value="Income">Income</option>
           </select>
           <select
             class="filter-select"
@@ -868,7 +872,7 @@
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
       <div class="modal" onclick="event.stopPropagation()" id="expenseModal">
         <div class="modal-header">
-          <h2>Add New Expense</h2>
+          <h2 id="modalTitle">Add New Expense</h2>
           <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
         <div class="modal-body">
@@ -884,7 +888,7 @@
                 step="0.01"
               />
             </div>
-            <div class="form-group">
+            <div class="form-group" id="categoryGroup">
               <label>Category</label>
               <select id="expCategory" class="form-input">
                 <option value="Food">Food</option>
@@ -896,10 +900,11 @@
                 <option value="Education">Education</option>
                 <option value="Travel">Travel</option>
                 <option value="Other">Other</option>
+                <option value="Income" id="incomeOption" style="display:none;">Income</option>
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="descGroup">
             <label>Description</label>
             <input
               type="text"
