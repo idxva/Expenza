@@ -63,9 +63,10 @@ function getCategoryColor(category) {
     Healthcare: "#10b981",
     Entertainment: "#8b5cf6",
     Bills: "#ef4444",
-    Education: "#06b6d4",
-    Travel: "#6366f1",
+    Education: "#0088a0",
+    Travel: "#4d00b1",
     Other: "#94a3b8",
+    Income: "#02a32a",
   };
   return colors[category] || "#94a3b8";
 }
@@ -166,6 +167,21 @@ function updateDate() {
 // ===== MODAL & FORMS =====
 function openAddModal() {
   document.getElementById("modalOverlay").classList.add("open");
+  document.getElementById("modalTitle").innerText = "Add New Expense";
+  document.getElementById("categoryGroup").style.display = "block";
+  document.getElementById("descGroup").style.display = "block";
+  document.getElementById("incomeOption").style.display = "none";
+  document.getElementById("expCategory").value = "Food"; 
+  document.getElementById("expDate").valueAsDate = new Date();
+}
+
+function openAddIncomeModal() {
+  document.getElementById("modalOverlay").classList.add("open");
+  document.getElementById("modalTitle").innerText = "Add New Income";
+  document.getElementById("categoryGroup").style.display = "none";
+  document.getElementById("descGroup").style.display = "none";
+  document.getElementById("incomeOption").style.display = "block";
+  document.getElementById("expCategory").value = "Income";
   document.getElementById("expDate").valueAsDate = new Date();
 }
 
@@ -186,9 +202,12 @@ function showToast(msg) {
 async function addExpense() {
   const amount = parseFloat(document.getElementById("expAmount").value);
   const category = document.getElementById("expCategory").value;
-  const desc = document.getElementById("expDesc").value || category;
+  let desc = document.getElementById("expDesc").value;
   const date = document.getElementById("expDate").value;
   const method = document.getElementById("expMethod").value;
+
+  if (category === "Income" && !desc) desc = "Income Received";
+  if (!desc) desc = category;
 
   if (isNaN(amount) || amount <= 0 || !date) {
     alert("Please enter valid amount and date");
@@ -245,16 +264,19 @@ function renderRecentExpenses() {
 
   list.innerHTML = recent
     .map(
-      (exp) => `
+      (exp) => {
+        const isIncome = exp.category === "Income";
+        return `
     <div class="tx-item">
-      <div class="tx-icon cat-${exp.category}">${getCategoryIcon(exp.category)}</div>
+      <div class="tx-icon cat-${exp.category}">${getCategoryIcon(isIncome ? "Healthcare" : exp.category)}</div>
       <div class="tx-info">
         <div class="tx-desc">${exp.desc}</div>
         <div class="tx-meta">${formatDate(exp.date)} • ${exp.method}</div>
       </div>
-      <div class="tx-amount">-₹${exp.amount.toFixed(2)}</div>
+      <div class="tx-amount ${isIncome ? "income" : ""}">${isIncome ? "+" : "-"}₹${exp.amount.toFixed(2)}</div>
     </div>
-  `,
+  `;
+      },
     )
     .join("");
 }
@@ -286,19 +308,22 @@ function renderFullExpenses() {
 
   list.innerHTML = filtered
     .map(
-      (exp) => `
+      (exp) => {
+        const isIncome = exp.category === "Income";
+        return `
     <div class="tx-item">
-      <div class="tx-icon cat-${exp.category}">${getCategoryIcon(exp.category)}</div>
+      <div class="tx-icon cat-${exp.category}">${getCategoryIcon(isIncome ? "Healthcare" : exp.category)}</div>
       <div class="tx-info">
         <div class="tx-desc">${exp.desc}</div>
         <div class="tx-meta">${formatDate(exp.date)} • ${exp.method} • ${exp.category}</div>
       </div>
-      <div class="tx-amount">-₹${exp.amount.toFixed(2)}</div>
+      <div class="tx-amount ${isIncome ? "income" : ""}">${isIncome ? "+" : "-"}₹${exp.amount.toFixed(2)}</div>
       <button class="tx-delete" onclick="deleteExpense('${exp.id}')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
       </button>
     </div>
-  `,
+  `;
+      },
     )
     .join("");
 }
@@ -306,13 +331,13 @@ function renderFullExpenses() {
 // ===== DASHBOARD LOGIC =====
 function updateDashboard() {
   const totalSpent = getThisMonthExpenses();
-  const income = state.budget.income || 0;
-  const balance = income - totalSpent;
+  const totalIncome = getThisMonthIncome();
+  const balance = totalIncome - totalSpent;
 
   document.getElementById("totalBalance").innerText =
     `₹${balance.toLocaleString()}`;
   document.getElementById("totalIncome").innerText =
-    `₹${income.toLocaleString()}`;
+    `₹${totalIncome.toLocaleString()}`;
   document.getElementById("totalSpent").innerText =
     `₹${totalSpent.toLocaleString()}`;
   document.getElementById("netSavings").innerText =
@@ -873,9 +898,10 @@ function initCharts() {
 }
 
 function updateDashboardCharts() {
-  // Category Doughnut
+  // Category Doughnut (Expenses Only)
   const spent = getExpensesByCategory(new Date().getMonth());
-  const labels = Object.keys(spent).filter((k) => spent[k] > 0);
+  // Filter out 'Income' from the doughnut chart
+  const labels = Object.keys(spent).filter((k) => spent[k] > 0 && k !== "Income");
   const data = labels.map((k) => spent[k]);
   const bgColors = labels.map((k) => getCategoryColor(k));
 
@@ -891,7 +917,7 @@ function updateDashboardCharts() {
       (l, i) => `
     <div class="donut-legend-item">
       <div class="donut-legend-dot" style="background:${bgColors[i]}"></div>
-      ${l} (₹${data[i]})
+      ${l} (₹${data[i].toLocaleString()})
     </div>
   `,
     )
@@ -909,7 +935,13 @@ function updateDashboardCharts() {
 
   const dailyExp = last7Days.map((date) => {
     return state.expenses
-      .filter((e) => e.date === date)
+      .filter((e) => e.date === date && e.category !== "Income")
+      .reduce((sum, e) => sum + e.amount, 0);
+  });
+
+  const dailyInc = last7Days.map((date) => {
+    return state.expenses
+      .filter((e) => e.date === date && e.category === "Income")
       .reduce((sum, e) => sum + e.amount, 0);
   });
 
@@ -917,15 +949,28 @@ function updateDashboardCharts() {
     labels: last7Days.map((d) => d.substring(5)), // MM-DD
     datasets: [
       {
-        label: "Expenses",
-        data: dailyExp,
-        borderColor: "#10b981",
+        label: "Income",
+        data: dailyInc,
+        borderColor: "#10b981", // Green
         backgroundColor: "rgba(16, 185, 129, 0.08)",
         fill: true,
         borderWidth: 2,
         pointBackgroundColor: "#10b981",
         pointBorderColor: "#10b981",
         pointRadius: 3,
+        tension: 0.4,
+      },
+      {
+        label: "Expenses",
+        data: dailyExp,
+        borderColor: "#ef4444", // Red
+        backgroundColor: "rgba(239, 68, 68, 0.08)",
+        fill: true,
+        borderWidth: 2,
+        pointBackgroundColor: "#ef4444",
+        pointBorderColor: "#ef4444",
+        pointRadius: 3,
+        tension: 0.4,
       },
     ],
   };
@@ -1093,8 +1138,17 @@ function saveSettings() {
 function getThisMonthExpenses() {
   const currentMonth = new Date().getMonth();
   return state.expenses
-    .filter((e) => new Date(e.date).getMonth() === currentMonth)
+    .filter((e) => new Date(e.date).getMonth() === currentMonth && e.category !== "Income")
     .reduce((sum, e) => sum + e.amount, 0);
+}
+
+function getThisMonthIncome() {
+  const currentMonth = new Date().getMonth();
+  const baseIncome = state.budget.income || 0;
+  const recordedIncome = state.expenses
+    .filter((e) => new Date(e.date).getMonth() === currentMonth && e.category === "Income")
+    .reduce((sum, e) => sum + e.amount, 0);
+  return baseIncome + recordedIncome;
 }
 
 function getExpensesByCategory(month = null) {
@@ -1109,7 +1163,9 @@ function getExpensesByCategory(month = null) {
 function getMonthlyExpensesArray() {
   const arr = new Array(12).fill(0);
   state.expenses.forEach((e) => {
-    arr[new Date(e.date).getMonth()] += e.amount;
+    if (e.category !== "Income") {
+      arr[new Date(e.date).getMonth()] += e.amount;
+    }
   });
   return arr;
 }
