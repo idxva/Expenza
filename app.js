@@ -140,7 +140,7 @@ function navigate(pageId) {
     },
     investments: {
       title: "Investments",
-      sub: "Track your gold & silver portfolio",
+      sub: "IN DEVELOPMENT**",
     },
     budget: { title: "Budget", sub: "Manage your monthly allocations" },
     settings: { title: "Settings", sub: "Configure rates and preferences" },
@@ -149,7 +149,7 @@ function navigate(pageId) {
   document.getElementById("pageSubtitle").innerText = titles[pageId].sub;
 
   if (pageId === "analytics") updateAnalyticsCharts();
-  if (pageId === "budget") updateBudgetCharts();
+  if (pageId === "budget") updateBudgetPage();
   if (pageId === "dashboard") updateDashboardCharts();
 }
 
@@ -228,10 +228,8 @@ async function addExpense() {
   updateDashboard();
   renderRecentExpenses();
   renderFullExpenses();
-  if (document.getElementById("page-analytics").classList.contains("active"))
-    updateAnalyticsCharts();
-  if (document.getElementById("page-budget").classList.contains("active"))
-    updateBudgetPage();
+  updateAnalyticsCharts();
+  updateBudgetPage();
 }
 
 async function deleteExpense(id) {
@@ -650,6 +648,7 @@ async function saveBudget() {
   showToast("Budget Saved!");
   updateBudgetPage();
   updateDashboard();
+  updateAnalyticsCharts();
 }
 
 function updateBudgetPage() {
