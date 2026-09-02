@@ -200,40 +200,6 @@ body {
   justify-content: center;
   width: 20px;
 }
-.sidebar-footer {
-  padding-top: 20px;
-  border-top: 1px solid var(--surface-border);
-}
-.user-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-}
-.user-avatar {
-  width: 34px;
-  height: 34px;
-  background: var(--primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-  flex-shrink: 0;
-  color: #fff;
-}
-.user-name {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-}
-.user-role {
-  display: block;
-  font-size: 11px;
-  color: var(--text3);
-}
 
 /* ===== TOPBAR ===== */
 .topbar {
