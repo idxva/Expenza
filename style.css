@@ -380,20 +380,20 @@ body {
   flex-shrink: 0;
 }
 .card-balance .card-icon {
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--green);
+  background: rgba(255, 255, 255, 0.12);
+  color: black;
 }
 .card-income .card-icon {
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--green);
+  background: white;
+  color: green;
 }
 .card-expense .card-icon {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--red);
+  background: white;
+  color: red;
 }
 .card-savings .card-icon {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--accent);
+  background: white;
+  color: black;
 }
 .card-body {
   display: flex;
@@ -412,7 +412,7 @@ body {
   font-family: "Inter", sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: #fff;
+  color: #000000;
 }
 .card-change {
   font-size: 11px;
