@@ -9,7 +9,7 @@
 :root {
   --bg: #ffffff;
   --bg2: #f5f6f7;
-  --bg3: #0e0f11;
+  --bg3: #d4d6da;
   --surface: rgba(0, 0, 0, 0.02);
   --surface2: rgba(0, 0, 0, 0.04);
   --surface-border: rgba(0, 0, 0, 0.08);
@@ -1025,7 +1025,7 @@ body {
 }
 .budget-bar-fill {
   height: 100%;
-  border-radius: 3px;
+  border-radius: px;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .budget-bar-fill.safe {
