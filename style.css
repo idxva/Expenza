@@ -465,7 +465,7 @@ body {
 
 /* ===== GLASS CARD ===== */
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(97, 1, 252, 0.055);
   backdrop-filter: blur(40px) saturate(200%);
   -webkit-backdrop-filter: blur(40px) saturate(200%);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -824,11 +824,9 @@ body {
     0 20px 48px rgba(0, 0, 0, 0.5);
 }
 .gold-card {
-  border-left: 3px solid var(--gold);
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.04), var(--surface));
 }
 .silver-card {
-  border-left: 3px solid var(--silver);
   background: linear-gradient(
     135deg,
     rgba(148, 163, 184, 0.04),
@@ -836,7 +834,6 @@ body {
   );
 }
 .total-invest-card {
-  border-left: 3px solid var(--primary);
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), var(--surface));
 }
 .metal-icon {
