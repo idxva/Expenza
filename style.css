@@ -151,11 +151,11 @@ body {
 
 .brand-name {
   display: block;
-  font-family: "Space Grotesk";
-  font-weight: 900;
-  font-size: 15px;
-  color: #0bc248;
-  letter-spacing: 0.1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  color: #000000;
+  letter-spacing: -0.01em;
 }
 
 .sidebar-nav {
@@ -1012,6 +1012,7 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+/* ===================================================================buttons.css */
 .btn-primary {
   width: 100%;
   padding: 12px;
