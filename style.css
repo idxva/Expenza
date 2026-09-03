@@ -15,7 +15,7 @@
   --surface-border: rgba(0, 0, 0, 0.08);
   --primary: #6366F1;
   --primary2: #3033dd;
-  --primary-glow: rgba(16, 185, 129, 0.2);
+  --primary-glow: rgba(89, 16, 185, 0.2);
   --accent: #f59e0b;
   --accent2: #d97706;
   --gold: #f59e0b;
@@ -26,7 +26,7 @@
   --text2: #0b0c0e;
   --text3: #09090a;
   --radius: 15px;
-  --radius-sm: 15px;
+  --radius-sm: 11px;
   --sidebar: 230px;
 }
 html,
@@ -186,11 +186,9 @@ body {
   color: var(--text2);
   background: rgba(255, 255, 255, 0.03);
 }
--- IGNORE--------------------------------------------------------------------------------------------------- --
 .nav-item.active {
   color: var(--primary);
-  background: rgba(16, 185, 114, 0.479);
-  border-left: 1px solid var(--primary);
+  background: rgba(0, 0, 0, 0);
   padding-left: 11px;
   
 }
@@ -328,7 +326,7 @@ body {
 }
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(16, 185, 129, 0.3);
+  border-color: rgba(0, 0, 0, 0.3);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 12px 40px rgba(0, 0, 0, 0.4),
@@ -1030,8 +1028,8 @@ body {
 }
 .btn-primary:hover {
   background: var(--primary2);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.856);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.363);
 }
 .btn-secondary {
   flex: 1;
