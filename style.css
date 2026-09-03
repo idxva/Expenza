@@ -227,8 +227,6 @@ body {
   flex-wrap: wrap;
 }
 .date-badge {
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
   padding: 8px 14px;
   border-radius: var(--radius-sm);
   font-size: 12px;
@@ -252,7 +250,7 @@ body {
 .btn-add-expense:hover {
   background: var(--primary2);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 58, 0.3);
+  box-shadow: 0 6px 20px rgba(241, 99, 99, 0.507);
 }
 .btn-add-expense span,
 .btn-add-income span {
@@ -276,10 +274,10 @@ body {
   gap: 6px;
 }
 .btn-add-income:hover {
-  background: var(--primary);
+  background: var(--primary2);
   color: #fff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 58, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.342);
 }
 
 /* ===== PAGES ===== */
