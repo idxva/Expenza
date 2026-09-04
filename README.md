@@ -1,1 +1,1 @@
-Master your money with Expenza, the high-performance suite for the modern investor. We combine granular spending tracking, deep budget analytics, and investment monitoring into one unified ecosystem. Built with a "security-first" focus, Expenza features local encrypted backups, ensuring your sensitive data remains entirely under your control.
+
