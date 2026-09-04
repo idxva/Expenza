@@ -9,3 +9,9 @@ Expenza is a sleek, client-side **expense and investment tracker** built with pl
 - **Investment section** (currently marked as in development)
 - **Local-first persistence** using browser `localStorage`
 - **Manual gold/silver rate settings** saved per browser
+## Tech Stack
+- HTML5
+- CSS3
+- Vanilla JavaScript (no framework)
+- [Chart.js](https://www.chartjs.org/) via CDN
+- [CryptoJS](https://cryptojs.gitbook.io/docs/) via CDN
